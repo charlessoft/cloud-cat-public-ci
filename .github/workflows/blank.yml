@@ -124,6 +124,7 @@ jobs:
           # echo "UTILS_DIR=${PWD}/${{github.event.client_payload.project_name}}/myutils" >> $GITHUB_ENV
           echo "UTILS_DIR=/tmp/myutils" >> $GITHUB_ENV
           echo "WORK_ROOT_DIR=${PWD}/${{github.event.client_payload.project_name}}" >> $GITHUB_ENV
+          echo "ADMIN_DIR==${PWD}/${{github.event.client_payload.project_name}}/admin" >> $GITHUB_ENV
           echo "WORKSPACE=${PWD}/${{github.event.client_payload.project_name}}" >> $GITHUB_ENV
           echo "JENKINS_ENV_PATH=/tmp/.JENKINS.env" >> $GITHUB_ENV
           # echo "JENKINS_ENV_PATH=${PWD}/${{github.event.client_payload.project_name}}/.JENKINS.env" >> $GITHUB_ENV
@@ -169,8 +170,8 @@ jobs:
 
       - name: Generate  env 
         run: |
-          export UTILS_DIR=${PWD}/${{github.event.client_payload.project_name}}/myutils
-          echo "UTILS_DIR=${PWD}/${{github.event.client_payload.project_name}}/myutils" >> $GITHUB_ENV
+          export UTILS_DIR=${PWD}/${{github.event.client_payload.project_name}}/admin/myutils
+          echo "UTILS_DIR=${PWD}/${{github.event.client_payload.project_name}}/admin/myutils" >> $GITHUB_ENV
           echo "export UTILS_DIR=$UTILS_DIR" >> $JENKINS_ENV_PATH
 
 
@@ -207,7 +208,7 @@ jobs:
           
           # 编译
           
-          bash ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/build_server.sh ${JENKINS_ENV_PATH} || CheckLastResult
+          bash ${WORK_ROOT_DIR}/admin/myutils/cloud-cat/scripts/build_server.sh ${JENKINS_ENV_PATH} || CheckLastResult
           
           # 编译agent
           # bash ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/build_agent.sh ${JENKINS_ENV_PATH} || CheckLastResult
@@ -215,7 +216,7 @@ jobs:
           
           # echo "build web system======="
           # 编译web 系统
-          bash ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/build_web.sh ${JENKINS_ENV_PATH} || CheckLastResult
+          bash ${WORK_ROOT_DIR}/admin/myutils/cloud-cat/scripts/build_web.sh ${JENKINS_ENV_PATH} || CheckLastResult
 
           # 编译h5 web 系统
           # echo "build h5 web system======>"
