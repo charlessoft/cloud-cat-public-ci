@@ -205,10 +205,14 @@ jobs:
           pnpm config set registry https://registry.npmjs.org
           pnpm config get registry
           # ----- begin
+
+          BUILD_JENKINS_ENV_PATH=/tmp/.JENKINS.build.env
+          cp ${JENKINS_ENV_PATH} ${BUILD_JENKINS_ENV_PATH}
+          echo "export WORK_ROOT_DIR=${WORK_ROOT_DIR}/admin" >> ${BUILD_JENKINS_ENV_PATH}
           
           # 编译
           
-          bash ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/build_server.sh ${JENKINS_ENV_PATH} || CheckLastResult
+          bash ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/build_server.sh ${BUILD_JENKINS_ENV_PATH} || CheckLastResult
           
           # 编译agent
           # bash ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/build_agent.sh ${JENKINS_ENV_PATH} || CheckLastResult
@@ -216,7 +220,7 @@ jobs:
           
           # echo "build web system======="
           # 编译web 系统
-          bash ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/build_web.sh ${JENKINS_ENV_PATH} || CheckLastResult
+          bash ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/build_web.sh ${BUILD_JENKINS_ENV_PATH} || CheckLastResult
 
           # 编译h5 web 系统
           # echo "build h5 web system======>"
