@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.20.4]
+        node-version: [20.19.0]
     steps:
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.5.3
@@ -170,8 +170,8 @@ jobs:
 
       - name: Generate  env 
         run: |
-          export UTILS_DIR=${PWD}/${{github.event.client_payload.project_name}}/admin/myutils
-          echo "UTILS_DIR=${PWD}/${{github.event.client_payload.project_name}}/admin/myutils" >> $GITHUB_ENV
+          export UTILS_DIR=${PWD}/${{github.event.client_payload.project_name}}/myutils
+          echo "UTILS_DIR=${PWD}/${{github.event.client_payload.project_name}}/myutils" >> $GITHUB_ENV
           echo "export UTILS_DIR=$UTILS_DIR" >> $JENKINS_ENV_PATH
 
 
@@ -184,7 +184,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ matrix.node-version }}
           # cache: 'pnpm'
           
       - name: build
@@ -208,7 +208,7 @@ jobs:
           
           # 编译
           
-          bash ${WORK_ROOT_DIR}/admin/myutils/cloud-cat/scripts/build_server.sh ${JENKINS_ENV_PATH} || CheckLastResult
+          bash ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/build_server.sh ${JENKINS_ENV_PATH} || CheckLastResult
           
           # 编译agent
           # bash ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/build_agent.sh ${JENKINS_ENV_PATH} || CheckLastResult
@@ -216,7 +216,7 @@ jobs:
           
           # echo "build web system======="
           # 编译web 系统
-          bash ${WORK_ROOT_DIR}/admin/myutils/cloud-cat/scripts/build_web.sh ${JENKINS_ENV_PATH} || CheckLastResult
+          bash ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/build_web.sh ${JENKINS_ENV_PATH} || CheckLastResult
 
           # 编译h5 web 系统
           # echo "build h5 web system======>"
