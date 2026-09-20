@@ -272,7 +272,18 @@ jobs:
 
 
           # 发布
-          bash ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/publish_server.sh ${JENKINS_ENV_PATH} || CheckLastResult
+          BUILD_JENKINS_ENV_PATH=/tmp/.JENKINS.publish.env
+          cp ${JENKINS_ENV_PATH} ${BUILD_JENKINS_ENV_PATH}
+          echo "export WORK_ROOT_DIR=${WORK_ROOT_DIR}/admin" >> ${BUILD_JENKINS_ENV_PATH}
+
+          # The shared scripts are copied from a Windows-authored repository.
+          sed -i 's/\r$//' ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/init.sh
+          sed -i 's/\r$//' ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/publish_server.sh
+          sed -i 's/\r$//' ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/publish_web.sh
+          sed -i 's/^export SERVER_PACKAGE=mscolorprint\.zip$/export SERVER_PACKAGE=cloud_cat_server.zip/' ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/init.sh
+          sed -i '/^gh release upload /s/ || true$//' ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/publish_server.sh
+          sed -i '/^gh release upload /s/ || true$//' ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/publish_web.sh
+          bash ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/publish_server.sh ${BUILD_JENKINS_ENV_PATH} || CheckLastResult
           
           ## 注释 bash ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/publish_agent.sh ${JENKINS_ENV_PATH} || CheckLastResult
           
@@ -280,7 +291,8 @@ jobs:
 
           echo "publish web system======>"
           # 发布web系统
-          bash ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/publish_web.sh ${JENKINS_ENV_PATH} || CheckLastResult
+          sed -i '1s/^\xEF\xBB\xBF//' ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/publish_web.sh
+          bash ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/publish_web.sh ${BUILD_JENKINS_ENV_PATH} || CheckLastResult
           
 
           # # 发布h5 web系统
