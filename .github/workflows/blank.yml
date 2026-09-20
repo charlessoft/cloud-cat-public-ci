@@ -614,7 +614,7 @@ jobs:
           # 麦小
           echo "deploy"
           echo "docker_deploy md environment ======>"
-          bash ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/docker_deploy.sh ${JENKINS_ENV_PATH} || CheckLastResult
+          bash ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/develop/docker_deploy.sh ${JENKINS_ENV_PATH} || CheckLastResult
           # bash ${WORK_ROOT_DIR}/myutils/cloud-cat/scripts/maixiao/docker_deploy.sh ${JENKINS_ENV_PATH} || CheckLastResult
 
           
